@@ -1,9 +1,9 @@
 {
-	"$schema": "https://turborepo.org/schema.json",
-	"tasks": {
-		"//#format-and-lint": {},
-		"//#format-and-lint:fix": {
-			"cache": false
-		}
-	}
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "//#format-and-lint": {},
+    "//#format-and-lint:fix": {
+      "cache": false
+    }
+  }
 }

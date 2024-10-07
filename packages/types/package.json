@@ -1,0 +1,10 @@
+{
+  "name": "@cssdotts/types",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "shx rm -rf .turbo node_modules",
+    "typecheck": "tsc --noEmit"
+  }
+}
