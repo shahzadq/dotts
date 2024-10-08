@@ -12,7 +12,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "correctness": { "noUnusedVariables": "warn" },
+      "correctness": { "noUnusedVariables": "warn", "noUnusedImports": "warn" },
       "style": { "useImportType": "warn", "noNonNullAssertion": "error" }
     }
   },

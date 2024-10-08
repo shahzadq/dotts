@@ -62,5 +62,5 @@ export type CSSMediaOperator =
 export type CSSMediaBasicType = "screen" | "print" | "all";
 export type CSSMediaType =
   | CSSMediaBasicType
-  | `only ${CSSMediaBasicType}`
-  | `not ${CSSMediaBasicType}`;
+  | `${CSSMediaOnlyOperator} ${CSSMediaBasicType}`
+  | `${CSSMediaNotOperator} ${CSSMediaBasicType}`;
