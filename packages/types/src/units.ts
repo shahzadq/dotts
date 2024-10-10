@@ -6,13 +6,15 @@ export type CSSAbsoluteLengthUnit =
   | "pc"
   | "pt"
   | "px";
-export type CSSRelativeLengthUnit =
+
+export type CSSFontRelativeLengthUnit =
   | "em"
   | "ex"
   | "ch"
   | "rem"
   | "lh"
-  | "rlh"
+  | "rlh";
+export type CSSViewportRelativeLengthUnit =
   | "vw"
   | "vh"
   | "vmin"
@@ -25,10 +27,16 @@ export type CSSRelativeLengthUnit =
   | "lvh"
   | "dvw"
   | "dvh";
+export type CSSRelativeLengthUnit =
+  | CSSFontRelativeLengthUnit
+  | CSSViewportRelativeLengthUnit;
+
 export type CSSLengthUnit = CSSAbsoluteLengthUnit | CSSRelativeLengthUnit;
 
 export type CSSResolutionUnit = "dpi" | "dpcm" | "dppx" | "x";
+export type CSSAngleUnit = "deg" | "grad" | "rad" | "turn";
+export type CSSTimeUnit = "s" | "ms";
 
-export type CSSUnit = CSSLengthUnit | CSSResolutionUnit;
+export type CSSUnit = CSSLengthUnit | CSSResolutionUnit | CSSAngleUnit;
 
-export type WithUnit<U extends CSSUnit> = `${number}${U}`;
+export type CSSValueWithUnit<U extends CSSUnit> = `${number}${U}`;

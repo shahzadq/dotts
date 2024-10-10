@@ -1,115 +1,159 @@
 import type {
+  CSSLengthMediaFeaturesUnits,
+  CSSMediaAndOperator,
   CSSMediaFeatures,
+  CSSMediaOrOperator,
   CSSMediaType,
-  CSSUnit,
-  WithUnit,
+  CSSResolutionMediaFeaturesUnits,
 } from "@cssdotts/types";
 import { addBrackets, camelCaseToKebabCase, getKeys, isDefined } from "./utils";
-import type { KeysMatching } from "./types";
 
-type OverrideKeys = KeysMatching<CSSMediaFeatures, WithUnit<CSSUnit>>;
+type MaybeArray<T> = T | T[];
 
-type WithUnitExtended<K extends OverrideKeys> = CSSMediaFeatures[K] | number;
+type FeaturesToOverride = CSSLengthMediaFeaturesUnits &
+  CSSResolutionMediaFeaturesUnits;
 
-const defaultUnits = {
+const defaultFeatureUnits = {
   width: "px",
-  maxWidth: "px",
   minWidth: "px",
+  maxWidth: "px",
   height: "px",
-  maxHeight: "px",
   minHeight: "px",
+  maxHeight: "px",
   resolution: "dpi",
   maxResolution: "dpi",
   minResolution: "dpi",
-} as const satisfies Record<OverrideKeys, CSSUnit>;
+} as const satisfies FeaturesToOverride;
 
-const defaultUnitsFeatures = Object.keys(defaultUnits);
-
-export type MediaFeatures = Omit<CSSMediaFeatures, OverrideKeys> &
-  Record<OverrideKeys, WithUnitExtended<OverrideKeys>> & {
-    type: CSSMediaType;
-  };
-
-export type MediaOperators = {
-  and: MediaQueries[];
-  or: MediaQueries[];
-  not: MediaQueries[];
+export type MediaFeatures = Omit<CSSMediaFeatures, keyof FeaturesToOverride> & {
+  [Key in keyof FeaturesToOverride]: CSSMediaFeatures[Key] | number;
+} & {
+  type: CSSMediaType;
 };
 
-export type MediaQueries = Partial<MediaFeatures & MediaOperators> | string;
-type Queries = MediaQueries | ((h: typeof helpers) => MediaQueries);
+type MediaOperators = {
+  and: Node[];
+  or: Node[];
+  not: MaybeArray<Node>;
+};
+
+type Node = Partial<MediaFeatures & MediaOperators> | string;
 
 const helpers = {
-  and: (...queries: MediaQueries[]) => ({ and: queries }),
-  or: (...queries: MediaQueries[]) => ({ or: queries }),
-  not: (...queries: MediaQueries[]) => ({ not: queries }),
-} as const;
-
-const joins = {
-  and: " and ",
-  or: " or ",
-} as const;
-
-const parseQueries = (
-  queries: Queries,
-  config: { hasParentNode?: boolean } = {},
-): string => {
-  // if the query is a function, run it
-  const node = typeof queries === "function" ? queries(helpers) : queries;
-  // if a node is a string, we assumes it an already parsed query
-  if (typeof node === "string") return node;
-  // extract all the keys and filter out anything that doesn't have a defined value
-  const keys = getKeys(node).filter((key) => isDefined(node[key]));
-
-  const query = keys
-    .map((key) => {
-      const value = node[key];
-
-      switch (key) {
-        case "type": {
-          if (typeof value !== "string") return undefined;
-          return value;
-        }
-
-        case "and":
-        case "or":
-        case "not": {
-          if (!Array.isArray(value)) return undefined;
-
-          const queries = value.map((query) =>
-            parseQueries(query, { hasParentNode: true }),
-          );
-
-          const query = `${key === "not" ? "not " : ""}${queries.join(joins[key === "not" ? "and" : key])}`;
-
-          return queries.length > 1 && config.hasParentNode
-            ? addBrackets(query)
-            : query;
-        }
-
-        default: {
-          // features
-          if (typeof value !== "string" && typeof value !== "number")
-            return undefined;
-
-          let parsedValue = value;
-
-          if (typeof value === "number" && defaultUnitsFeatures.includes(key))
-            parsedValue = `${value}${defaultUnits[key as keyof typeof defaultUnits]}`;
-
-          return addBrackets(`${camelCaseToKebabCase(key)}: ${parsedValue}`);
-        }
-      }
-    })
-    .filter(isDefined)
-    .join(joins.and);
-
-  return keys.length > 1 && config.hasParentNode ? addBrackets(query) : query;
+  and: (queries: MediaOperators["and"]) => ({ and: queries }),
+  or: (queries: MediaOperators["or"]) => ({ or: queries }),
+  not: (queries: MediaOperators["not"]) => ({ not: queries }),
 };
 
-export const createMediaQuery = (...queries: Queries[]) => {
-  if (queries.length === 1 && queries[0]) return parseQueries(queries[0]);
-  return parseQueries({
-    and: queries.map((q) => (typeof q === "function" ? q(helpers) : q)),
-  });
+export type MediaQuery =
+  | MaybeArray<Node>
+  | ((h: typeof helpers) => MaybeArray<Node>);
+
+const defaultFeatureUnitsKeys = Object.keys(defaultFeatureUnits);
+const defaultFeatureUnitsIncludesKey = (
+  tbd: string,
+): tbd is keyof typeof defaultFeatureUnits =>
+  defaultFeatureUnitsKeys.includes(tbd);
+
+const parseMediaFeature = <F extends keyof MediaFeatures>(
+  feature: F,
+  value: MediaFeatures[F],
+) => {
+  const parse = (value: string) =>
+    addBrackets(`${camelCaseToKebabCase(feature)}: ${value}`);
+
+  if (typeof value === "number" && defaultFeatureUnitsIncludesKey(feature))
+    return parse(value + defaultFeatureUnits[feature]);
+
+  return parse(value.toString());
+};
+
+const parseNode = (
+  node: Node,
+  config: { hasParentNode: boolean } = { hasParentNode: false },
+): string => {
+  if (typeof node === "string") return node;
+
+  const joinAndAddBrackets = (
+    queries: string[],
+    { joinWith }: { joinWith: CSSMediaAndOperator | CSSMediaOrOperator },
+  ) => {
+    const query = queries.join(` ${joinWith} `);
+
+    // console.log({ query, ...config });
+
+    return config.hasParentNode && queries.length > 1
+      ? addBrackets(query)
+      : query;
+  };
+
+  const keys = getKeys(node).filter((key) => isDefined(node[key]));
+
+  if (keys.length > 1 && !config.hasParentNode)
+    return parseNode({ and: keys.map((key) => ({ [key]: node[key] })) });
+
+  //   console.log({ keys, ...config });
+
+  return joinAndAddBrackets(
+    keys
+      .map((key) => {
+        const value = node[key];
+
+        switch (key) {
+          case "type": {
+            if (typeof value !== "string") return undefined;
+            return value;
+          }
+
+          case "and":
+          case "or": {
+            if (!Array.isArray(value)) return undefined;
+
+            return joinAndAddBrackets(
+              value.map((n) => parseNode(n, { hasParentNode: true })),
+              {
+                joinWith: key,
+              },
+            );
+          }
+
+          case "not": {
+            if (typeof value === "number" || typeof value === "undefined")
+              return undefined;
+
+            const addNot = (query: string) => `not ${query}`;
+
+            if (!Array.isArray(value))
+              return addNot(parseNode(value, { hasParentNode: true }));
+
+            return addNot(
+              joinAndAddBrackets(
+                value.map((n) => parseNode(n, { hasParentNode: true })),
+                { joinWith: "and" },
+              ),
+            );
+          }
+
+          default: {
+            if (typeof value !== "string" && typeof value !== "number")
+              return undefined;
+
+            return parseMediaFeature(
+              key,
+              value as CSSMediaFeatures[typeof key],
+            );
+          }
+        }
+      })
+      .filter(isDefined),
+    { joinWith: "and" },
+  );
+};
+
+export const createMediaQuery = (query: MediaQuery) => {
+  const resolvedQuery = typeof query === "function" ? query(helpers) : query;
+
+  if (Array.isArray(resolvedQuery)) return parseNode({ and: resolvedQuery });
+
+  return parseNode(resolvedQuery);
 };
