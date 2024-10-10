@@ -5,8 +5,10 @@ import type {
   CSSMediaOrOperator,
   CSSMediaType,
   CSSResolutionMediaFeaturesUnits,
-} from "@cssdotts/types";
-import { addBrackets, camelCaseToKebabCase, getKeys, isDefined } from "./utils";
+} from "~/types";
+import { getKeys } from "@dotts/utils/objects";
+import { camelCaseToKebabCase, addBrackets } from "@dotts/utils/strings";
+import { isDefined } from "@dotts/utils/typeguards";
 
 type MaybeArray<T> = T | T[];
 
