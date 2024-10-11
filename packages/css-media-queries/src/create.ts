@@ -5,7 +5,7 @@ import type {
   CSSMediaOrOperator,
   CSSMediaType,
   CSSResolutionMediaFeaturesUnits,
-} from "~/types";
+} from "@dotts/css-types";
 import { getKeys } from "@dotts/utils/objects";
 import { camelCaseToKebabCase, addBrackets } from "@dotts/utils/strings";
 import { isDefined } from "@dotts/utils/typeguards";

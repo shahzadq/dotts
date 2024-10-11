@@ -33,6 +33,24 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
 
+  packages/css-media-queries:
+    devDependencies:
+      '@dotts/css-types':
+        specifier: workspace:*
+        version: link:../css-types
+      '@dotts/utils':
+        specifier: workspace:*
+        version: link:../utils
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.2
+
+  packages/css-types:
+    devDependencies:
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.2
+
   packages/utils:
     devDependencies:
       typescript:

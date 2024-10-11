@@ -3,7 +3,7 @@ import type {
   CSSResolutionUnit,
   CSSValueWithUnit,
 } from "./units";
-import type { Ratio } from "./values";
+import type { CSSRatioValue } from "./values";
 
 type FeatureWithMinMaxVariants<K extends string, T> = Record<
   K | `min${Capitalize<K>}` | `max${Capitalize<K>}`,
@@ -32,7 +32,7 @@ type MediaFeaturesWithUnits = {
 };
 
 export type CSSMediaFeatures = MediaFeaturesWithUnits &
-  FeatureWithMinMaxVariants<"aspectRatio", Ratio> &
+  FeatureWithMinMaxVariants<"aspectRatio", CSSRatioValue> &
   FeatureWithMinMaxVariants<"color", number> &
   FeatureWithMinMaxVariants<"colorIndex", number> &
   FeatureWithMinMaxVariants<"monochrome", number> & {
