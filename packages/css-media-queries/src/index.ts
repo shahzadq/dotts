@@ -128,7 +128,10 @@ const parseNode = (
           if (typeof value === "number" || typeof value === "undefined")
             return undefined;
 
-          const addNot = (query: string) => `not ${query}`;
+          // TODO: somehow stop adding brackets to top level not statements
+          // currently no workaround as comparing for a top level node will almost always return a true because and statements are added in
+          // { _config: ... }
+          const addNot = (query: string) => addBrackets(`not ${query}`);
 
           if (!Array.isArray(value))
             return addNot(parseNode(value, { hasParentNode: true }));
