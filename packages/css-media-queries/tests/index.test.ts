@@ -1,4 +1,4 @@
-import { createMediaQuery } from "../src/index";
+import { createMediaQuery } from "../src";
 
 const expected = {
   simple: "only screen and (min-width: 100px) and (max-width: 200px)",
@@ -46,7 +46,7 @@ test("not test", () => {
       type: "screen",
       not: { orientation: "landscape" },
     }),
-  ).toBe("screen and (not (orientation: landscape))");
+  ).toBe("screen and not (orientation: landscape)");
 });
 
 test("recursion", () => {
@@ -59,7 +59,7 @@ test("recursion", () => {
         },
       },
     }),
-  ).toBe("screen and (not (not (orientation: landscape)))");
+  ).toBe("screen and not (not (orientation: landscape))");
 });
 
 test("css tricks example", () => {
