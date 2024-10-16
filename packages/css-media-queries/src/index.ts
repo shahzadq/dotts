@@ -155,19 +155,16 @@ export const initMediaQueries = (
     return queries.length > 1 && ctx?.parentNode ? addBrackets(query) : query;
   };
 
-  return {
-    createMediaQuery: (query: MediaQuery) => {
-      const resolvedQuery =
-        typeof query === "function" ? query(helpers) : query;
+  return (query: MediaQuery) => {
+    const resolvedQuery = typeof query === "function" ? query(helpers) : query;
 
-      if (Array.isArray(resolvedQuery))
-        return parseNode({
-          and: resolvedQuery,
-        });
+    if (Array.isArray(resolvedQuery))
+      return parseNode({
+        and: resolvedQuery,
+      });
 
-      return parseNode(resolvedQuery);
-    },
+    return parseNode(resolvedQuery);
   };
 };
 
-export const { createMediaQuery } = initMediaQueries();
+export const createMediaQuery = initMediaQueries();
