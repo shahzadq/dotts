@@ -6,7 +6,6 @@ import type {
   CSSMediaType,
   CSSResolutionMediaFeaturesUnits,
 } from "@dotts/css-types";
-import { getKeys } from "@dotts/utils/objects";
 import { addBrackets, camelCaseToKebabCase } from "@dotts/utils/strings";
 import { isDefined } from "@dotts/utils/typeguards";
 
@@ -90,7 +89,9 @@ export const initMediaQueries = (
   ): string => {
     if (typeof node === "string") return node;
 
-    const keys = getKeys(node).filter((key) => isDefined(node[key]));
+    const keys = Object.keys(node).filter((key) =>
+      isDefined(node[key as keyof typeof node]),
+    ) as (keyof typeof node)[];
     // this condition helps with single objects being passed without a parent node - this seprates them out and adds a parent "and" node for correct brackets
     if (keys.length > 1 && typeof ctx?.parentNode === "undefined")
       return parseNode({ and: keys.map((key) => ({ [key]: node[key] })) });
