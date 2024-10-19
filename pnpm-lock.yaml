@@ -25,6 +25,13 @@ importers:
         version: 5.6.2
 
   packages/css-media-queries:
+    dependencies:
+      '@dotts/css-zod-schemas':
+        specifier: workspace:*
+        version: link:../css-zod-schemas
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@dotts/css-types':
         specifier: workspace:*

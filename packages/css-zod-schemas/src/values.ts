@@ -6,8 +6,9 @@ type Ratio = `${number}/${number}`;
 const isNumber = (tbd: string) => !Number.isNaN(Number.parseInt(tbd));
 
 export const cssRatioValue = z.union([
-  z.string().refine(
+  z.any().refine(
     (arg): arg is Ratio => {
+      if (typeof arg !== "string") return false;
       const split = arg.split("/");
       if (split.length !== 2) return false;
       const [num1, num2] = split;

@@ -2,7 +2,6 @@ import type { z } from "zod";
 import type {
   cssLengthMediaFeaturesUnits,
   cssResolutionMediaFeaturesUnits,
-  cssMediaFeaturesWithUnits,
   cssMediaFeatures,
   cssMediaOrOperator,
   cssMediaNotOperator,
@@ -17,9 +16,6 @@ export type CSSLengthMediaFeaturesUnits = z.infer<
 >;
 export type CSSResolutionMediaFeaturesUnits = z.infer<
   typeof cssResolutionMediaFeaturesUnits
->;
-export type CSSMediaFeaturesWithUnits = z.infer<
-  typeof cssMediaFeaturesWithUnits
 >;
 export type CSSMediaFeatures = z.infer<typeof cssMediaFeatures>;
 

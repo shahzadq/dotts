@@ -26,6 +26,10 @@
     "test": "jest",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@dotts/css-zod-schemas": "workspace:*",
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "@dotts/css-types": "workspace:*",
     "@dotts/utils": "workspace:*",

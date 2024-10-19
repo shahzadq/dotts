@@ -1,49 +1,38 @@
-import type {
-  CSSLengthMediaFeaturesUnits,
-  CSSMediaAndOperator,
-  CSSMediaFeatures,
-  CSSMediaOrOperator,
-  CSSMediaType,
-  CSSResolutionMediaFeaturesUnits,
-} from "@dotts/css-types";
+import type { CSSMediaAndOperator, CSSMediaOrOperator } from "@dotts/css-types";
 import { addBrackets, camelCaseToKebabCase } from "@dotts/utils/strings";
 import { isDefined } from "@dotts/utils/typeguards";
+import {
+  mediaFeaturesSchema,
+  operatorsSchema,
+  type MediaFeatures,
+} from "./schemas";
+import type { MaybeArray, OverrideFeatures } from "./types";
+import type { z } from "zod";
 
-type MaybeArray<T> = T | T[];
-
-// these are features we want to extend the types for
-type OverrideFeatures = CSSLengthMediaFeaturesUnits &
-  CSSResolutionMediaFeaturesUnits;
-// override the above features and replace, also add type property
-export type MediaFeatures = Omit<CSSMediaFeatures, keyof OverrideFeatures> & {
-  [Key in keyof OverrideFeatures]: CSSMediaFeatures[Key] | number;
-} & {
-  type: CSSMediaType;
-};
-
-type Operators = {
-  and: Node[];
-  or: Node[];
-  not: MaybeArray<Node>;
-};
-// a node represents a property and its value in the object - either an operator or a group of features or a string
-// strings represent previously parsed nodes - although they technically can be anything
-// nodes are recursive (nodes can contain other nodes)
-// example - { and: [{or: [{}, {}]}, {or: ...}] } - and, or are nodes as are the feature groups they contain
-type Node = Partial<MediaFeatures & Operators> | string;
+type Node = Partial<
+  MediaFeatures & {
+    and: Node[];
+    or: Node[];
+    not: MaybeArray<Node>;
+  }
+>;
 
 const helpers = {
-  and: (queries: Operators["and"]) => ({ and: queries }),
-  or: (queries: Operators["or"]) => ({ or: queries }),
-  not: (queries: Operators["not"]) => ({ not: queries }),
+  and: (queries: Node["and"]) => ({ and: queries }),
+  or: (queries: Node["or"]) => ({ or: queries }),
+  not: (queries: Node["not"]) => ({ not: queries }),
 };
 
 export type MediaQuery =
   | MaybeArray<Node>
   | ((h: typeof helpers) => MaybeArray<Node>);
 
+export type InitMediaQueriesConfig = {
+  defaultUnits: OverrideFeatures;
+};
+
 export const initMediaQueries = (
-  { defaultUnits }: { defaultUnits: OverrideFeatures } = {
+  config: InitMediaQueriesConfig = {
     defaultUnits: {
       width: "px",
       minWidth: "px",
@@ -57,11 +46,6 @@ export const initMediaQueries = (
     },
   },
 ) => {
-  const defaultUnitsKeys = Object.keys(defaultUnits);
-  const defaultUnitsKeysIncludes = (
-    tbd: string,
-  ): tbd is keyof typeof defaultUnits => tbd in defaultUnitsKeys;
-
   const parseMediaFeature = <F extends keyof MediaFeatures>(
     feature: F,
     value: MediaFeatures[F],
@@ -70,8 +54,11 @@ export const initMediaQueries = (
       addBrackets(`${camelCaseToKebabCase(feature)}: ${value}`);
 
     // check if there are default units for numbers and if there are, apply them
-    if (typeof value === "number" && defaultUnitsKeysIncludes(feature))
-      return parse(value + defaultUnits[feature]);
+    if (typeof value === "number" && feature in config.defaultUnits)
+      return parse(
+        value +
+          config.defaultUnits[feature as keyof typeof config.defaultUnits],
+      );
 
     return parse(value.toString());
   };
@@ -82,28 +69,33 @@ export const initMediaQueries = (
   ) => queries.join(` ${join} `);
 
   const parseNode = (
-    node: Node,
+    node: Node | string,
     ctx?: {
-      parentNode: keyof Operators;
+      parentNode: z.infer<typeof operatorsSchema>;
     },
   ): string => {
     if (typeof node === "string") return node;
 
-    const keys = Object.keys(node).filter((key) =>
-      isDefined(node[key as keyof typeof node]),
-    ) as (keyof typeof node)[];
+    if (
+      typeof ctx !== "undefined" &&
+      !operatorsSchema.safeParse(ctx.parentNode).success
+    )
+      return parseNode(node, { parentNode: "and" });
+
+    const features = Object.entries(node).filter(([, value]) =>
+      isDefined(value),
+    ) as [keyof typeof node, number | MaybeArray<Node>][];
     // this condition helps with single objects being passed without a parent node - this seprates them out and adds a parent "and" node for correct brackets
-    if (keys.length > 1 && typeof ctx?.parentNode === "undefined")
-      return parseNode({ and: keys.map((key) => ({ [key]: node[key] })) });
+    if (features.length > 1 && typeof ctx?.parentNode === "undefined")
+      return parseNode({
+        and: features.map(([key, value]) => ({ [key]: value })),
+      });
 
-    const queries = keys
-      .map((key) => {
-        const value = node[key];
-
+    const queries = features
+      .map(([key, value]) => {
         switch (key) {
           case "type": {
-            if (typeof value !== "string") return undefined;
-            return value;
+            return mediaFeaturesSchema.shape.type.safeParse(value).data;
           }
 
           case "and":
@@ -140,12 +132,9 @@ export const initMediaQueries = (
           }
 
           default: {
-            if (typeof value !== "string" && typeof value !== "number")
-              return undefined;
-            return parseMediaFeature(
-              key,
-              value as CSSMediaFeatures[typeof key],
-            );
+            const { data } = mediaFeaturesSchema.shape[key].safeParse(value);
+            if (typeof data === "undefined") return undefined;
+            return parseMediaFeature(key, data);
           }
         }
       })
@@ -169,3 +158,5 @@ export const initMediaQueries = (
 };
 
 export const createMediaQuery = initMediaQueries();
+
+export type { MediaFeatures };

@@ -53,15 +53,18 @@ export const cssUnit = z.union([
   cssTimeUnit,
 ]);
 
-export const cssValueWithUnit = (
-  schema:
+export const cssValueWithUnit = <
+  S extends
     | typeof cssLengthUnit
     | typeof cssResolutionUnit
     | typeof cssAngleUnit
     | typeof cssTimeUnit
     | typeof cssUnit,
+>(
+  schema: S,
 ) =>
-  z.string().refine((arg): arg is `${number}${z.infer<typeof schema>}` => {
+  z.any().refine((arg): arg is `${number}${z.infer<S>}` => {
+    if (typeof arg !== "string") return false;
     // remove leading numbers from arg and then test against css units
     return schema.safeParse(arg.replace(/\d+/, "")).success;
   });
