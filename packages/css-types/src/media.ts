@@ -1,75 +1,32 @@
+import type { z } from "zod";
 import type {
-  CSSLengthUnit,
-  CSSResolutionUnit,
-  CSSValueWithUnit,
-} from "./units";
-import type { CSSRatioValue } from "./values";
+  cssLengthMediaFeaturesUnits,
+  cssResolutionMediaFeaturesUnits,
+  cssMediaFeaturesWithUnits,
+  cssMediaFeatures,
+  cssMediaOrOperator,
+  cssMediaNotOperator,
+  cssMediaAndOperator,
+  cssMediaOnlyOperator,
+  cssMediaBasicType,
+  cssMediaType,
+} from "@dotts/css-zod-schemas";
 
-type FeatureWithMinMaxVariants<K extends string, T> = Record<
-  K | `min${Capitalize<K>}` | `max${Capitalize<K>}`,
-  T
+export type CSSLengthMediaFeaturesUnits = z.infer<
+  typeof cssLengthMediaFeaturesUnits
 >;
-
-export type CSSLengthMediaFeaturesUnits = FeatureWithMinMaxVariants<
-  "width",
-  CSSLengthUnit
-> &
-  FeatureWithMinMaxVariants<"height", CSSLengthUnit>;
-
-export type CSSResolutionMediaFeaturesUnits = FeatureWithMinMaxVariants<
-  "resolution",
-  CSSResolutionUnit
+export type CSSResolutionMediaFeaturesUnits = z.infer<
+  typeof cssResolutionMediaFeaturesUnits
 >;
+export type CSSMediaFeaturesWithUnits = z.infer<
+  typeof cssMediaFeaturesWithUnits
+>;
+export type CSSMediaFeatures = z.infer<typeof cssMediaFeatures>;
 
-type MediaFeaturesWithUnits = {
-  [Key in keyof CSSLengthMediaFeaturesUnits]: CSSValueWithUnit<
-    CSSLengthMediaFeaturesUnits[Key]
-  >;
-} & {
-  [Key in keyof CSSResolutionMediaFeaturesUnits]: CSSValueWithUnit<
-    CSSResolutionMediaFeaturesUnits[Key]
-  >;
-};
+export type CSSMediaOrOperator = z.infer<typeof cssMediaOrOperator>;
+export type CSSMediaAndOperator = z.infer<typeof cssMediaAndOperator>;
+export type CSSMediaNotOperator = z.infer<typeof cssMediaNotOperator>;
+export type CSSMediaOnlyOperator = z.infer<typeof cssMediaOnlyOperator>;
 
-export type CSSMediaFeatures = MediaFeaturesWithUnits &
-  FeatureWithMinMaxVariants<"aspectRatio", CSSRatioValue> &
-  FeatureWithMinMaxVariants<"color", number> &
-  FeatureWithMinMaxVariants<"colorIndex", number> &
-  FeatureWithMinMaxVariants<"monochrome", number> & {
-    orientation: "landscape" | "portrait";
-    anyHover: "none" | "hover";
-    anyPointer: "none" | "coarse" | "fine";
-    colorGamut: "srgb" | "p3" | "rec2020";
-    displayMode:
-      | "fullscreen"
-      | "standalone"
-      | "minimal-ui"
-      | "browser"
-      | "window-controls-overlay";
-    dynamicRange: "standard" | "high";
-    forcedColors: "none" | "active";
-    grid: 0 | 1;
-    hover: "none" | "hover";
-    invertedColors: "none" | "inverted";
-    overflowBlock: "none" | "scroll" | "optional-paged" | "paged";
-    overflowInline: "none" | "scroll";
-    pointer: "none" | "coarse" | "fine";
-    prefersColorScheme: "light" | "dark";
-    prefersContrast: "no-preference" | "more" | "less" | "custom";
-    prefersReducedMotion: "no-preference" | "reduce";
-    scan: "interlace" | "progressive";
-    scripting: "none" | "initial-only" | "enabled";
-    update: "none" | "slow" | "fast";
-    videoDynamicRange: "standard" | "high";
-  };
-
-export type CSSMediaOrOperator = "or";
-export type CSSMediaAndOperator = "and";
-export type CSSMediaNotOperator = "not";
-export type CSSMediaOnlyOperator = "only";
-
-export type CSSMediaBasicType = "screen" | "print" | "all";
-export type CSSMediaType =
-  | CSSMediaBasicType
-  | `${CSSMediaOnlyOperator} ${CSSMediaBasicType}`
-  | `${CSSMediaNotOperator} ${CSSMediaBasicType}`;
+export type CSSMediaBasicType = z.infer<typeof cssMediaBasicType>;
+export type CSSMediaType = z.infer<typeof cssMediaType>;
