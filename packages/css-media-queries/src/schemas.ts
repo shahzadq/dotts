@@ -1,12 +1,6 @@
-import {
-  cssMediaAndOperator,
-  cssMediaFeatures,
-  cssMediaNotOperator,
-  cssMediaOrOperator,
-  cssMediaType,
-} from "@dotts/css-zod-schemas";
+import { cssMediaFeatures, cssMediaType } from "@dotts/css-zod-schemas";
 import { z } from "zod";
-import type { OverrideFeatures } from "./types";
+import type { MaybeArray, OverrideFeatures } from "./types";
 
 const extendSchemaWithNumber = <S extends z.ZodSchema>(schema: S) =>
   z.union([schema, z.number()]);
@@ -38,8 +32,19 @@ export const mediaFeaturesSchema = cssMediaFeatures
 
 export type MediaFeatures = z.infer<typeof mediaFeaturesSchema>;
 
-export const operatorsSchema = z.union([
-  cssMediaAndOperator,
-  cssMediaNotOperator,
-  cssMediaOrOperator,
-]);
+type Node = Partial<
+  MediaFeatures & {
+    and: Node[];
+    or: Node[];
+    not: MaybeArray<Node>;
+  }
+>;
+
+// recursive zod schema requires explicit type
+export const nodeSchema: z.ZodType<Node> = mediaFeaturesSchema
+  .extend({
+    and: z.lazy(() => z.array(nodeSchema)),
+    or: z.lazy(() => z.array(nodeSchema)),
+    not: z.lazy(() => z.union([nodeSchema, z.array(nodeSchema)])),
+  })
+  .partial();

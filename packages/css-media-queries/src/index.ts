@@ -1,21 +1,15 @@
-import type { CSSMediaAndOperator, CSSMediaOrOperator } from "@dotts/css-types";
+import type {
+  CSSMediaAndOperator,
+  CSSMediaNotOperator,
+  CSSMediaOrOperator,
+} from "@dotts/css-types";
 import { addBrackets, camelCaseToKebabCase } from "@dotts/utils/strings";
-import { isDefined } from "@dotts/utils/typeguards";
-import {
-  mediaFeaturesSchema,
-  operatorsSchema,
-  type MediaFeatures,
-} from "./schemas";
+import { isDefined, isEmptyObject } from "@dotts/utils/typeguards";
+import { nodeSchema, type MediaFeatures } from "./schemas";
 import type { MaybeArray, OverrideFeatures } from "./types";
-import type { z } from "zod";
+import { z } from "zod";
 
-type Node = Partial<
-  MediaFeatures & {
-    and: Node[];
-    or: Node[];
-    not: MaybeArray<Node>;
-  }
->;
+type Node = z.infer<typeof nodeSchema>;
 
 const helpers = {
   and: (queries: Node["and"]) => ({ and: queries }),
@@ -50,7 +44,7 @@ export const initMediaQueries = (
     feature: F,
     value: MediaFeatures[F],
   ) => {
-    const parse = (value: string) =>
+    const parse = (value: string | number) =>
       addBrackets(`${camelCaseToKebabCase(feature)}: ${value}`);
 
     // check if there are default units for numbers and if there are, apply them
@@ -60,7 +54,7 @@ export const initMediaQueries = (
           config.defaultUnits[feature as keyof typeof config.defaultUnits],
       );
 
-    return parse(value.toString());
+    return parse(value);
   };
 
   const joinQueries = (
@@ -71,20 +65,18 @@ export const initMediaQueries = (
   const parseNode = (
     node: Node | string,
     ctx?: {
-      parentNode: z.infer<typeof operatorsSchema>;
+      parentNode:
+        | CSSMediaNotOperator
+        | CSSMediaAndOperator
+        | CSSMediaOrOperator;
     },
   ): string => {
+    // a node that is a string is assumed to be an already processed node so we return it as it is
     if (typeof node === "string") return node;
-
-    if (
-      typeof ctx !== "undefined" &&
-      !operatorsSchema.safeParse(ctx.parentNode).success
-    )
-      return parseNode(node, { parentNode: "and" });
-
+    // remove any entries whose value that has explicitly been set to undefined
     const features = Object.entries(node).filter(([, value]) =>
       isDefined(value),
-    ) as [keyof typeof node, number | MaybeArray<Node>][];
+    );
     // this condition helps with single objects being passed without a parent node - this seprates them out and adds a parent "and" node for correct brackets
     if (features.length > 1 && typeof ctx?.parentNode === "undefined")
       return parseNode({
@@ -92,17 +84,25 @@ export const initMediaQueries = (
       });
 
     const queries = features
-      .map(([key, value]) => {
+      .map(([k, value]) => {
+        const key = k as keyof Node;
         switch (key) {
           case "type": {
-            return mediaFeaturesSchema.shape.type.safeParse(value).data;
+            const data = value as unknown as Required<Node>[typeof key];
+            return data;
           }
 
           case "and":
           case "or": {
-            if (!Array.isArray(value)) return undefined;
+            const data = value as unknown as Required<Node>[typeof key];
 
-            const queries = value.map((n) => parseNode(n, { parentNode: key }));
+            const queries = data
+              .map((n) =>
+                !isEmptyObject(n)
+                  ? parseNode(n, { parentNode: key })
+                  : undefined,
+              )
+              .filter(isDefined);
 
             const query = joinQueries(queries, key);
 
@@ -112,15 +112,19 @@ export const initMediaQueries = (
           }
 
           case "not": {
-            const isArray = Array.isArray(value);
+            const data = value as unknown as Required<Node>[typeof key];
 
-            if (typeof value !== "object" && !isArray) return undefined;
+            const isArray = Array.isArray(data);
 
-            const values = isArray ? value : [value];
+            const values = isArray ? data : [data];
 
-            const queries = values.map((n) =>
-              parseNode(n, { parentNode: "not" }),
-            );
+            const queries = values
+              .map((n) =>
+                !isEmptyObject(n)
+                  ? parseNode(n, { parentNode: "not" })
+                  : undefined,
+              )
+              .filter(isDefined);
 
             const query = joinQueries(queries, "and");
 
@@ -132,8 +136,7 @@ export const initMediaQueries = (
           }
 
           default: {
-            const { data } = mediaFeaturesSchema.shape[key].safeParse(value);
-            if (typeof data === "undefined") return undefined;
+            const data = value as unknown as Required<Node>[typeof key];
             return parseMediaFeature(key, data);
           }
         }
@@ -148,12 +151,20 @@ export const initMediaQueries = (
   return (query: MediaQuery) => {
     const resolvedQuery = typeof query === "function" ? query(helpers) : query;
 
-    if (Array.isArray(resolvedQuery))
-      return parseNode({
-        and: resolvedQuery,
-      });
+    if (Array.isArray(resolvedQuery)) {
+      const { data } = z.array(nodeSchema).safeParse(resolvedQuery);
+      if (typeof data === "undefined") return "";
 
-    return parseNode(resolvedQuery);
+      return parseNode({
+        and: data,
+      });
+    }
+
+    const { data, error } = nodeSchema.safeParse(resolvedQuery);
+    console.log(error);
+    if (typeof data === "undefined") return "";
+
+    return parseNode(data);
   };
 };
 

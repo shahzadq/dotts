@@ -10,3 +10,13 @@ export const isDefined = <T>(tbd?: T): tbd is T => typeof tbd !== "undefined";
  */
 export const isString = (tbd?: unknown): tbd is string =>
   typeof tbd === "string";
+
+export const isEmptyObject = (tbd: object) => {
+  for (const prop in tbd) {
+    if (Object.hasOwn(tbd, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+};
