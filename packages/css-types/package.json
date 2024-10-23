@@ -1,6 +1,6 @@
 {
   "name": "@dotts/css-types",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "CSS Media Query type-safe generation",
   "keywords": ["css", "typescript", "types", "css types"],
   "repository": {
@@ -9,8 +9,9 @@
   },
   "homepage": "https://github.com/shahzadq/dotts/tree/main/packages/css-types",
   "license": "MIT",
-  "main": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "clean": "shx rm -rf .turbo node_modules",
     "typecheck": "tsc --noEmit"
   },
