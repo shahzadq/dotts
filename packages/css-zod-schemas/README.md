@@ -1,19 +1,20 @@
-# @dotts/css-types
+# @dotts/css-zod-schemas
 
-CSS type definitions based on the MDN docs including media features, units and more. Types are inferred from [`@dotts/css-zod-schemas`](https://github.com/shahzadq/dotts/blob/main/packages/css-zod-schemas), for consistency.
+Zod schemas for CSS properties based on the MDN docs including media features, units and more.
 
 ```shell
-pnpm add -D @dotts/css-types
+pnpm add -D @dotts/css-zod-schemas
 ```
 
 ## Usage
 ```ts
-import type { CSSRatioValue } from "@dotts/css-types";
+import { cssRatioValue } from "@dotts/css-zod-schemas";
 
-const ratio: CSSRatioValue = "1/1"; // valid type
+const { success } = cssRatioValue.safeParse("1/1");
+console.log(success); // => true
 ```
 
-## Types
+## Schemas
 
 ### Values
 - [`CSSRatioValue`](https://developer.mozilla.org/en-US/docs/Web/CSS/ratio)

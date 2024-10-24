@@ -1,8 +1,8 @@
 {
   "name": "@dotts/css-zod-schemas",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "CSS zod schemas for validation",
+  "keywords": ["css", "typescript", "zod", "javascript", "validation"],
   "repository": {
     "type": "github",
     "url": "https://github.com/shahzadq/dotts.git"
@@ -25,7 +25,8 @@
   "scripts": {
     "build": "tsup",
     "clean": "shx rm -rf .turbo node_modules",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublish": "pnpm build"
   },
   "devDependencies": {
     "@dotts/utils": "workspace:*",

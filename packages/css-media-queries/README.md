@@ -54,10 +54,10 @@ const query = createMediaQuery({
     }
 })
 ```
-Operators are nested and accept arrays of properties (note within a single feature group (i.e. `{ minWidth: 100, maxWidth: 1000 }`), all features will be joined with an `and` operator).
+Operators are nested and accept arrays of properties (note: within a single feature group (i.e. `{ minWidth: 100, maxWidth: 1000 }`), all features will be joined with an `and` operator).
 
-#### Functional Syntax
-Using function syntax, to generatethe above query we would use:
+#### Function Syntax
+Using function syntax, to generate the above query we would use:
 ```ts
 import { createMediaQuery } from "@dotts/css-media-queries";
 
@@ -77,7 +77,7 @@ const query = createMediaQuery(({ and, or, not }) => and([
 In this syntax, we destructure helper functions from `createMediaQuery` and apply them as needed (note:  we don't need the top level `and` function as an array will be joined with `and` operators by default).
 
 #### Keep in mind
-For advanced queries it is better to remove redundant `and` operators and not excessively wrap queries otherwise the generated output will be unneccesarily wrapped in lots of brackets (this shouldn't effect the desired output).
+For advanced queries it is better to remove redundant `and` operators and not excessively wrap queries otherwise the generated output will have lots of redundant brackets (this shouldn't effect the output).
 
 ### Recursion
 Our functions are written recursively, meaning you create as in depth queries as you want.
@@ -102,6 +102,27 @@ const query = createMediaQuery(
 )
 ```
 
+### Config
+You can configure the `createMediaQuery` function with a few options.
+```ts
+import { initMediaQueries } from "@dotts/css-media-queries";
+
+// the initMediaQueries function will return a createMediaQuery function
+const createMediaQuery = initMediaQueries({
+    defaultUnits: {
+        width: "rem"
+    }
+});
+
+const query = createMediaQuery({
+    type: "screen",
+    width: 100
+});
+
+// expected output - "screen and (width: 100rem)"
+console.log(query);
+```
+
 ### Differences with json2mq
 While the original inspiration for this package came from json2mq, there are a few differences in the way we implement our features:
 
@@ -110,4 +131,4 @@ While the original inspiration for this package came from json2mq, there are a f
 3. Complete type-safety - The main inspiration for writing this package was creating a type-safe json2mq. It is strongly recommended to use this package with typescript for autocomplete.
 
 ### Types
-The types for CSS media features and operators come from [@dotts/css-types](https://github.com/shahzadq/dotts/blob/main/packages/css-types).
+The types for CSS media features and operators come from [`@dotts/css-types`](https://github.com/shahzadq/dotts/blob/main/packages/css-types).
