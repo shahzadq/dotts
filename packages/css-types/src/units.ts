@@ -1,32 +1,29 @@
-import type { z } from "zod";
-import type {
-  cssAbsoluteLengthUnit,
-  cssFontRelativeLengthUnit,
-  cssViewportRelativeLengthUnit,
-  cssRelativelengthUnit,
-  cssLengthUnit,
-  cssResolutionUnit,
-  cssAngleUnit,
-  cssTimeUnit,
-  cssUnit,
-} from "@dotts/css-zod-schemas";
+export type AbsoluteLength = "cm" | "mm" | "Q" | "in" | "pc" | "pt" | "px";
+export type FontRelativeLength = "em" | "ex" | "ch" | "rem" | "lh" | "rlh";
+export type ViewportRelativeLength =
+  | "vw"
+  | "vh"
+  | "vmin"
+  | "vmax"
+  | "vb"
+  | "vi"
+  | "svw"
+  | "svh"
+  | "lvw"
+  | "lvh"
+  | "dvw"
+  | "dvh";
+export type RelativeLength = FontRelativeLength | ViewportRelativeLength;
+export type Length = AbsoluteLength | RelativeLength;
 
-export type CSSAbsoluteLengthUnit = z.infer<typeof cssAbsoluteLengthUnit>;
+export type Resolution = "dpi" | "dpcm" | "dppx" | "x";
 
-export type CSSFontRelativeLengthUnit = z.infer<
-  typeof cssFontRelativeLengthUnit
->;
-export type CSSViewportRelativeLengthUnit = z.infer<
-  typeof cssViewportRelativeLengthUnit
->;
-export type CSSRelativeLengthUnit = z.infer<typeof cssRelativelengthUnit>;
+export type Angle = "deg" | "grad" | "rad" | "turn";
 
-export type CSSLengthUnit = z.infer<typeof cssLengthUnit>;
+export type Time = "s" | "ms";
 
-export type CSSResolutionUnit = z.infer<typeof cssResolutionUnit>;
-export type CSSAngleUnit = z.infer<typeof cssAngleUnit>;
-export type CSSTimeUnit = z.infer<typeof cssTimeUnit>;
+export type Frequency = "Hz" | "kHz";
 
-export type CSSUnit = z.infer<typeof cssUnit>;
+export type Percentage = "%";
 
-export type CSSValueWithUnit<U extends CSSUnit> = `${number}${U}`;
+export type Flex = "fr";

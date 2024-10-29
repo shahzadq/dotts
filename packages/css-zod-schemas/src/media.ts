@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { cssLengthUnit, cssResolutionUnit, cssValueWithUnit } from "./units";
-import { cssRatioValue } from "./values";
+import { cssLengthUnit, cssResolutionUnit } from "./units";
+import { cssRatio, cssNumberWithUnit } from "./data-types";
 
 export const cssLengthMediaFeaturesUnits = z.object({
   minWidth: cssLengthUnit,
@@ -18,24 +18,24 @@ export const cssResolutionMediaFeaturesUnits = z.object({
 });
 
 export const cssMediaFeatures = z.object({
-  minWidth: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.minWidth),
-  maxWidth: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.maxWidth),
-  width: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.width),
-  minHeight: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.minHeight),
-  maxHeight: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.maxHeight),
-  height: cssValueWithUnit(cssLengthMediaFeaturesUnits.shape.height),
-  minResolution: cssValueWithUnit(
+  minWidth: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.minWidth),
+  maxWidth: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.maxWidth),
+  width: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.width),
+  minHeight: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.minHeight),
+  maxHeight: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.maxHeight),
+  height: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.height),
+  minResolution: cssNumberWithUnit(
     cssResolutionMediaFeaturesUnits.shape.minResolution,
   ),
-  maxResolution: cssValueWithUnit(
+  maxResolution: cssNumberWithUnit(
     cssResolutionMediaFeaturesUnits.shape.maxResolution,
   ),
-  resolution: cssValueWithUnit(
+  resolution: cssNumberWithUnit(
     cssResolutionMediaFeaturesUnits.shape.resolution,
   ),
-  minAspectRatio: cssRatioValue,
-  maxAspectRatio: cssRatioValue,
-  aspectRatio: cssRatioValue,
+  minAspectRatio: cssRatio,
+  maxAspectRatio: cssRatio,
+  aspectRatio: cssRatio,
   minColor: z.number(),
   maxColor: z.number(),
   color: z.number(),
@@ -53,7 +53,7 @@ export const cssMediaFeatures = z.object({
     "fullscreen",
     "standalone",
     "minimal-ui",
-    "borwser",
+    "browser",
     "window-controls-overlay",
   ]),
   dynamicRange: z.enum(["standard", "high"]),

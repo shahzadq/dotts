@@ -45,6 +45,7 @@ export const cssLengthUnit = z.union([
 export const cssResolutionUnit = z.enum(["dpi", "dpcm", "dppx", "x"]);
 export const cssAngleUnit = z.enum(["deg", "grad", "rad", "turn"]);
 export const cssTimeUnit = z.enum(["s", "ms"]);
+export const cssFrequencyUnit = z.enum(["Hz", "kHz"]);
 
 export const cssUnit = z.union([
   cssLengthUnit,
@@ -53,18 +54,5 @@ export const cssUnit = z.union([
   cssTimeUnit,
 ]);
 
-export const cssValueWithUnit = <
-  S extends
-    | typeof cssLengthUnit
-    | typeof cssResolutionUnit
-    | typeof cssAngleUnit
-    | typeof cssTimeUnit
-    | typeof cssUnit,
->(
-  schema: S,
-) =>
-  z.any().refine((arg): arg is `${number}${z.infer<S>}` => {
-    if (typeof arg !== "string") return false;
-    // remove leading numbers from arg and then test against css units
-    return schema.safeParse(arg.replace(/\d+/, "")).success;
-  });
+export const cssPercentageUnit = z.literal("%");
+export const cssFlexUnit = z.literal("fr");
