@@ -1,6 +1,14 @@
 import { z } from "zod";
+import { zodEnum } from "../utils";
+import type * as CSS from "@dotts/css-types";
 
-export const cssWideKeyword = z.enum(["initial", "inherit", "revert", "unset"]);
+// export const cssWideKeyword = z.enum(["initial", "inherit", "revert", "unset"]);
+export const cssWideKeyword = zodEnum<CSS.DataTypes.Textual.WideKeyword>([
+  "inherit",
+  "initial",
+  "revert",
+  "unset",
+]);
 
 // TODO - REPLACE WITH REGEX
 export const cssCustomIndent = z.string();

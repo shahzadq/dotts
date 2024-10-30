@@ -1,21 +1,28 @@
-import type { Units } from "..";
+import type {
+  AngleUnit,
+  FlexUnit,
+  FrequencyUnit,
+  LengthUnit,
+  PercentageUnit,
+  ResolutionUnit,
+  TimeUnit,
+} from "../units";
 
-export type Number = number;
-export type Integer = Number;
+export type Integer = number;
 
 export type Dimension<
   U extends
-    | Units.Flex
-    | Units.Angle
-    | Units.Frequency
-    | Units.Length
-    | Units.Percentage
-    | Units.Resolution
-    | Units.Time,
+    | FlexUnit
+    | AngleUnit
+    | FrequencyUnit
+    | LengthUnit
+    | PercentageUnit
+    | ResolutionUnit
+    | TimeUnit,
 > = `${number}${U}`;
 
-export type Percentage = Dimension<Units.Percentage>;
+export type Percentage = Dimension<PercentageUnit>;
 
 export type Ratio = number | `${number}/${number}`;
 
-export type Flex = Dimension<Units.Flex>;
+export type Flex = Dimension<FlexUnit>;

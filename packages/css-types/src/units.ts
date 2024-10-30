@@ -1,6 +1,6 @@
-export type AbsoluteLength = "cm" | "mm" | "Q" | "in" | "pc" | "pt" | "px";
-export type FontRelativeLength = "em" | "ex" | "ch" | "rem" | "lh" | "rlh";
-export type ViewportRelativeLength =
+export type AbsoluteLengthUnit = "cm" | "mm" | "Q" | "in" | "pc" | "pt" | "px";
+export type FontRelativeLengthUnit = "em" | "ex" | "ch" | "rem" | "lh" | "rlh";
+export type ViewportRelativeLengthUnit =
   | "vw"
   | "vh"
   | "vmin"
@@ -13,17 +13,19 @@ export type ViewportRelativeLength =
   | "lvh"
   | "dvw"
   | "dvh";
-export type RelativeLength = FontRelativeLength | ViewportRelativeLength;
-export type Length = AbsoluteLength | RelativeLength;
+export type RelativeLengthUnit =
+  | FontRelativeLengthUnit
+  | ViewportRelativeLengthUnit;
+export type LengthUnit = AbsoluteLengthUnit | RelativeLengthUnit;
 
-export type Resolution = "dpi" | "dpcm" | "dppx" | "x";
+export type ResolutionUnit = "dpi" | "dpcm" | "dppx" | "x";
 
-export type Angle = "deg" | "grad" | "rad" | "turn";
+export type AngleUnit = "deg" | "grad" | "rad" | "turn";
 
-export type Time = "s" | "ms";
+export type TimeUnit = "s" | "ms";
 
-export type Frequency = "Hz" | "kHz";
+export type FrequencyUnit = "Hz" | "kHz";
 
-export type Percentage = "%";
+export type PercentageUnit = "%";
 
-export type Flex = "fr";
+export type FlexUnit = "fr";

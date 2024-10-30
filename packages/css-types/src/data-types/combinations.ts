@@ -1,17 +1,10 @@
-import type { DataTypes } from "..";
+import type { Percentage } from "./numeric";
+import type { Angle, Frequency, Length, Time } from "./quantities";
 
-export type LengthPercentage =
-  | DataTypes.Quantities.Length
-  | DataTypes.Numeric.Percentage;
+export type LengthPercentageCombination = Length | Percentage;
 
-export type FrequencyPercentage =
-  | DataTypes.Quantities.Frequency
-  | DataTypes.Numeric.Percentage;
+export type FrequencyPercentageCombination = Frequency | Percentage;
 
-export type AnglePercentage =
-  | DataTypes.Quantities.Angle
-  | DataTypes.Numeric.Percentage;
+export type AnglePercentageCombination = Angle | Percentage;
 
-export type TimePercentage =
-  | DataTypes.Quantities.Time
-  | DataTypes.Numeric.Percentage;
+export type TimePercentageCombination = Time | Percentage;

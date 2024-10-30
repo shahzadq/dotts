@@ -1,43 +1,38 @@
-import type { DataTypes, Units } from ".";
+import type { LengthUnit, ResolutionUnit } from "./units";
+import type { Dimension, Ratio } from "./data-types";
 
 export type FeaturesLengthUnits = Record<
   "minWidth" | "maxWidth" | "width" | "minHeight" | "maxHeight" | "height",
-  Units.Length
+  LengthUnit
 >;
 
 export type FeaturesResolutionUnits = Record<
   "minResolution" | "maxResolution" | "resolution",
-  Units.Resolution
+  ResolutionUnit
 >;
 
 export type Features = {
-  minWidth: DataTypes.Numeric.Dimension<FeaturesLengthUnits["minWidth"]>;
-  maxWidth: DataTypes.Numeric.Dimension<FeaturesLengthUnits["maxWidth"]>;
-  width: DataTypes.Numeric.Dimension<FeaturesLengthUnits["width"]>;
-  minHeight: DataTypes.Numeric.Dimension<FeaturesLengthUnits["minHeight"]>;
-  maxHeight: DataTypes.Numeric.Dimension<FeaturesLengthUnits["maxHeight"]>;
-  height: DataTypes.Numeric.Dimension<FeaturesLengthUnits["height"]>;
-  minResolution: DataTypes.Numeric.Dimension<
-    FeaturesResolutionUnits["minResolution"]
-  >;
-  maxResolution: DataTypes.Numeric.Dimension<
-    FeaturesResolutionUnits["maxResolution"]
-  >;
-  resolution: DataTypes.Numeric.Dimension<
-    FeaturesResolutionUnits["resolution"]
-  >;
-  minAspectRatio: DataTypes.Numeric.Ratio;
-  maxAspectRatio: DataTypes.Numeric.Ratio;
-  aspectRatio: DataTypes.Numeric.Ratio;
-  minColor: DataTypes.Numeric.Number;
-  maxColor: DataTypes.Numeric.Number;
-  color: DataTypes.Numeric.Number;
-  minColorIndex: DataTypes.Numeric.Number;
-  maxColorIndex: DataTypes.Numeric.Number;
-  colorIndex: DataTypes.Numeric.Number;
-  minMonochrome: DataTypes.Numeric.Number;
-  maxMonochrome: DataTypes.Numeric.Number;
-  monochrome: DataTypes.Numeric.Number;
+  minWidth: Dimension<FeaturesLengthUnits["minWidth"]>;
+  maxWidth: Dimension<FeaturesLengthUnits["maxWidth"]>;
+  width: Dimension<FeaturesLengthUnits["width"]>;
+  minHeight: Dimension<FeaturesLengthUnits["minHeight"]>;
+  maxHeight: Dimension<FeaturesLengthUnits["maxHeight"]>;
+  height: Dimension<FeaturesLengthUnits["height"]>;
+  minResolution: Dimension<FeaturesResolutionUnits["minResolution"]>;
+  maxResolution: Dimension<FeaturesResolutionUnits["maxResolution"]>;
+  resolution: Dimension<FeaturesResolutionUnits["resolution"]>;
+  minAspectRatio: Ratio;
+  maxAspectRatio: Ratio;
+  aspectRatio: Ratio;
+  minColor: number;
+  maxColor: number;
+  color: number;
+  minColorIndex: number;
+  maxColorIndex: number;
+  colorIndex: number;
+  minMonochrome: number;
+  maxMonochrome: number;
+  monochrome: number;
   orientation: "landscape" | "portrait";
   anyHover: "none" | "hover";
   anyPointer: "none" | "coarse" | "fine";

@@ -8,8 +8,11 @@ export const removeLeadingDigits = (str: string) =>
   str.replace(regex.digits, "");
 
 export const zodLiteral = <T extends string>(arg: T) => z.literal(arg);
-export const zodEnum = <T extends readonly [string, ...string[]]>(arg: T) =>
-  z.enum(arg);
+
+export const zodEnum = <A extends string, T extends [A, ...A[]] = [A, ...A[]]>(
+  arg: T,
+) => z.enum(arg);
+
 export const zodUnion = <
   A extends z.ZodTypeAny,
   T extends [A, A, ...A[]] = [A, A, ...A[]],

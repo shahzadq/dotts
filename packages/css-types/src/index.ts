@@ -1,4 +1,4 @@
-export type * as Units from "./units";
-export type * as Fonts from "./fonts";
-export type * as DataTypes from "./data-types";
-export type * as Media from "./media";
+export type * from "./units";
+export type * from "./fonts";
+export type * from "./data-types";
+export type * from "./media";

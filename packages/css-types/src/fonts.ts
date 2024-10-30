@@ -1,4 +1,4 @@
-export type AbsoluteSize =
+export type FontAbsoluteSize =
   | "xx-small"
   | "x-small"
   | "small"

@@ -1,6 +1,6 @@
-export type Transparent = "transparent";
+export type TransparentColor = "transparent";
 
-export type Standard =
+export type StandardColor =
   | "black"
   | "silver"
   | "gray"
@@ -18,9 +18,9 @@ export type Standard =
   | "teal"
   | "aqua";
 
-export type Named =
-  | Transparent
-  | Standard
+export type NamedColor =
+  | TransparentColor
+  | StandardColor
   | "aliceblue"
   | "antiquewhite"
   | "aquamarine"
@@ -175,3 +175,30 @@ export type System =
   | "VisitedText";
 
 export type CurrentColor = "currentColor";
+
+// export type Hex = `#${string}`;
+
+// export type AlphaValue =
+//   | DataTypes.Numeric.Number
+//   | DataTypes.Numeric.Percentage;
+
+// type H =
+//   | DataTypes.Quantities.Angle
+//   | DataTypes.Numeric.Number
+//   | DataTypes.Textual.NoneKeyword;
+// type S =
+//   | DataTypes.Numeric.Percentage
+//   | DataTypes.Numeric.Number
+//   | DataTypes.Textual.NoneKeyword;
+// type L =
+//   | DataTypes.Numeric.Percentage
+//   | DataTypes.Numeric.Number
+//   | DataTypes.Textual.NoneKeyword;
+// type A = AlphaValue | DataTypes.Textual.NoneKeyword;
+
+// type HslSyntaxBase = `${H} ${S} ${L}` | `${H} ${S} ${L} / ${A}`;
+// type HslAbsoluteSyntax = `hsl(${HslSyntaxBase})`;
+// type HslRelativeSyntax = `hsl(from ${Color} ${HslSyntaxBase})`;
+// export type Hsl = HslAbsoluteSyntax | HslRelativeSyntax;
+
+// export type Color = Named | System | CurrentColor | Hex | Hsl;
