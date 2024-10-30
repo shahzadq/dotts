@@ -1,26 +1,26 @@
 import type { LengthUnit, ResolutionUnit } from "./units";
 import type { Dimension, Ratio } from "./data-types";
 
-export type FeaturesLengthUnits = Record<
+export type MediaFeaturesLengthUnits = Record<
   "minWidth" | "maxWidth" | "width" | "minHeight" | "maxHeight" | "height",
   LengthUnit
 >;
 
-export type FeaturesResolutionUnits = Record<
+export type MediaFeaturesResolutionUnits = Record<
   "minResolution" | "maxResolution" | "resolution",
   ResolutionUnit
 >;
 
-export type Features = {
-  minWidth: Dimension<FeaturesLengthUnits["minWidth"]>;
-  maxWidth: Dimension<FeaturesLengthUnits["maxWidth"]>;
-  width: Dimension<FeaturesLengthUnits["width"]>;
-  minHeight: Dimension<FeaturesLengthUnits["minHeight"]>;
-  maxHeight: Dimension<FeaturesLengthUnits["maxHeight"]>;
-  height: Dimension<FeaturesLengthUnits["height"]>;
-  minResolution: Dimension<FeaturesResolutionUnits["minResolution"]>;
-  maxResolution: Dimension<FeaturesResolutionUnits["maxResolution"]>;
-  resolution: Dimension<FeaturesResolutionUnits["resolution"]>;
+export type MediaFeatures = {
+  minWidth: Dimension<MediaFeaturesLengthUnits["minWidth"]>;
+  maxWidth: Dimension<MediaFeaturesLengthUnits["maxWidth"]>;
+  width: Dimension<MediaFeaturesLengthUnits["width"]>;
+  minHeight: Dimension<MediaFeaturesLengthUnits["minHeight"]>;
+  maxHeight: Dimension<MediaFeaturesLengthUnits["maxHeight"]>;
+  height: Dimension<MediaFeaturesLengthUnits["height"]>;
+  minResolution: Dimension<MediaFeaturesResolutionUnits["minResolution"]>;
+  maxResolution: Dimension<MediaFeaturesResolutionUnits["maxResolution"]>;
+  resolution: Dimension<MediaFeaturesResolutionUnits["resolution"]>;
   minAspectRatio: Ratio;
   maxAspectRatio: Ratio;
   aspectRatio: Ratio;
@@ -60,13 +60,13 @@ export type Features = {
   videoDynamicRange: "standard" | "high";
 };
 
-export type OrOperator = "or";
-export type AndOperator = "and";
-export type NotOperator = "not";
-export type OnlyOperator = "only";
+export type MediaOrOperator = "or";
+export type MediaAndOperator = "and";
+export type MediaNotOperator = "not";
+export type MediaOnlyOperator = "only";
 
-export type BasicType = "screen" | "print" | "all";
-export type Type =
-  | BasicType
-  | `${OnlyOperator} ${BasicType}`
-  | `${NotOperator} ${BasicType}`;
+export type MediaBasicType = "screen" | "print" | "all";
+export type TMediaype =
+  | MediaBasicType
+  | `${MediaOnlyOperator} ${MediaBasicType}`
+  | `${MediaNotOperator} ${MediaBasicType}`;

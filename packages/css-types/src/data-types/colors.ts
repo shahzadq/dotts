@@ -153,7 +153,7 @@ export type NamedColor =
   | "whitesmoke"
   | "yellowgreen";
 
-export type System =
+export type SystemColor =
   | "AccentColor"
   | "AccentColorText"
   | "ActiveText"

@@ -29,3 +29,12 @@ export type FrequencyUnit = "Hz" | "kHz";
 export type PercentageUnit = "%";
 
 export type FlexUnit = "fr";
+
+export type Unit =
+  | LengthUnit
+  | ResolutionUnit
+  | AngleUnit
+  | TimeUnit
+  | FrequencyUnit
+  | PercentageUnit
+  | FlexUnit;

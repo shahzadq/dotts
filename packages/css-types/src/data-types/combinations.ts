@@ -1,10 +1,10 @@
 import type { Percentage } from "./numeric";
 import type { Angle, Frequency, Length, Time } from "./quantities";
 
-export type LengthPercentageCombination = Length | Percentage;
+export type LengthPercentage = Length | Percentage;
 
-export type FrequencyPercentageCombination = Frequency | Percentage;
+export type FrequencyPercentage = Frequency | Percentage;
 
-export type AnglePercentageCombination = Angle | Percentage;
+export type AnglePercentage = Angle | Percentage;
 
-export type TimePercentageCombination = Time | Percentage;
+export type TimePercentage = Time | Percentage;
