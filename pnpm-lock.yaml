@@ -41,6 +41,9 @@ importers:
       '@dotts/css-zod-schemas':
         specifier: workspace:*
         version: link:../css-zod-schemas
+      '@dotts/utils':
+        specifier: workspace:*
+        version: link:../utils
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -48,9 +51,6 @@ importers:
       '@dotts/css-types':
         specifier: workspace:*
         version: link:../css-types
-      '@dotts/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@types/jest':
         specifier: ^29.5.13
         version: 29.5.13
