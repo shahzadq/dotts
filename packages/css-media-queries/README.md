@@ -77,7 +77,7 @@ const query = createMediaQuery(({ and, or, not }) => and([
 In this syntax, we destructure helper functions from `createMediaQuery` and apply them as needed (note:  we don't need the top level `and` function as an array will be joined with `and` operators by default).
 
 #### Keep in mind
-For advanced queries it is better to remove redundant `and` operators and not excessively wrap queries otherwise the generated output will have lots of redundant brackets (this shouldn't effect the output).
+For advanced queries it is better to remove redundant `and` operators and not excessively wrap queries otherwise the generated output will have lots of redundant brackets (this shouldn't impact the desired effect).
 
 ### Recursion
 Our functions are written recursively, meaning you create as in depth queries as you want.

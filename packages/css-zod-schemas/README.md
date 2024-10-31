@@ -8,36 +8,61 @@ pnpm add -D @dotts/css-zod-schemas
 
 ## Usage
 ```ts
-import { cssRatioValue } from "@dotts/css-zod-schemas";
+import { ratio } from "@dotts/css-zod-schemas";
 
-const { success } = cssRatioValue.safeParse("1/1");
+const { success } = ratio.safeParse("1/1");
 console.log(success); // => true
 ```
 
+
 ## Schemas
 
-### Values
-- [`CSSRatioValue`](https://developer.mozilla.org/en-US/docs/Web/CSS/ratio)
-
 ### Units
-- [`CSSAbsoluteUnitLength`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)
-- [`CSSFontRelativeUnitLength`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
-- [`CSSViewportRelativeUnitLength`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
-- [`CSSRelativeLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
-- [`CSSLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length)
-- [`CSSResolutionUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/resolution)
-- [`CSSAngleUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle)
-- [`CSSTimeUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/time)
-- [`CSSUnit`](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
-- `CSSValueWithUnit`
+- [`absoluteLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)
+- [`fontRelativeLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
+- [`viewportRelativeLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
+- [`relativeLengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units)
+- [`lengthUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/length)
+- [`resolutionUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/resolution)
+- [`angleUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle)
+- [`timeUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/time)
+- [`frequencyUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/frequency)
+- [`percentageUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/percentage)
+- [`flexUnit`](https://developer.mozilla.org/en-US/docs/Web/CSS/flex_value)
+- `unit`
+
+### Data Types
+- [`transparentColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color#transparent)
+- [`standardColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)
+- [`namedColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)
+- [`systemColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/system-color)
+- [`currentColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#currentcolor_keyword)
+- [`integer`](https://developer.mozilla.org/en-US/docs/Web/CSS/integer)
+- [`dimension`](https://developer.mozilla.org/en-US/docs/Web/CSS/dimension)
+- [`percentage`](https://developer.mozilla.org/en-US/docs/Web/CSS/percentage)
+- [`ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/ratio)
+- [`flex`](https://developer.mozilla.org/en-US/docs/Web/CSS/flex_value)
+- [`wideKeyword`](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types#css-wide_keywords)
+- `none`
+- [`string`](https://developer.mozilla.org/en-US/docs/Web/CSS/string)
+- [`url`](https://developer.mozilla.org/en-US/docs/Web/CSS/url_value)
+- [`length`](https://developer.mozilla.org/en-US/docs/Web/CSS/length)
+- [`angle`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle)
+- [`time`](https://developer.mozilla.org/en-US/docs/Web/CSS/time)
+- [`frequency`](https://developer.mozilla.org/en-US/docs/Web/CSS/frequency)
+- [`resolution`](https://developer.mozilla.org/en-US/docs/Web/CSS/resolution)
+- [`lengthPercentage`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage)
+- [`frequencyPercentage`](https://developer.mozilla.org/en-US/docs/Web/CSS/frequency-percentage)
+- [`anglePercentage`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle-percentage)
+- [`timePercentage`](https://developer.mozilla.org/en-US/docs/Web/CSS/time-percentage)
 
 ### Media
-- `CSSLengthMediaFeaturesUnits`
-- `CSSResolutionMediaFeaturesUnits`
-- [`CSSMediaFeatures`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_features)
-- [`CSSMediaOrOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
-- [`CSSMediaAndOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
-- [`CSSMediaNotOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
-- [`CSSMediaOnlyOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
-- [`CSSMediaBasicType`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_types)
-- [`CSSMediaType`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_types)
+- `mediaFeaturesLengthUnits`
+- `mediaFeaturesResolutionUnits`
+- [`mediaFeatures`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_features)
+- [`mediaOrOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
+- [`mediaAndOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
+- [`mediaNotOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
+- [`mediaOnlyOperator`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#logical_operators)
+- [`mediaBasicType`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_types)
+- [`mediaType`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_types)

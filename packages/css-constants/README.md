@@ -14,7 +14,7 @@ const px = "px";
 console.log(absoluteLengthUnits.includes(px)); // => true
 ```
 
-## Schemas
+## Constants
 
 ### Data Types
 - [`wideKeyword`](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types#css-wide_keywords)
