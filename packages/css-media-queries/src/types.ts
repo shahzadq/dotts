@@ -1,12 +1,12 @@
 import type {
-  CSSLengthMediaFeaturesUnits,
-  CSSResolutionMediaFeaturesUnits,
+  MediaFeaturesLengthUnits,
+  MediaFeaturesResolutionUnits,
 } from "@dotts/css-types";
 
 export type MaybeArray<T> = T | T[];
 
-export type OverrideFeatures = CSSLengthMediaFeaturesUnits &
-  CSSResolutionMediaFeaturesUnits;
+export type OverrideFeatures = MediaFeaturesLengthUnits &
+  MediaFeaturesResolutionUnits;
 
 export type DeepPartial<T> = T extends object
   ? {

@@ -1,11 +1,12 @@
-import { cssMediaFeatures, cssMediaType } from "@dotts/css-zod-schemas";
+import type { MediaType } from "@dotts/css-types";
+import { mediaFeatures, mediaType } from "@dotts/css-zod-schemas";
 import { z } from "zod";
 import type { MaybeArray, OverrideFeatures } from "./types";
 
 const extendSchemaWithNumber = <S extends z.ZodSchema>(schema: S) =>
   z.union([schema, z.number()]);
 
-export const features = cssMediaFeatures
+export const features = mediaFeatures
   .omit({
     minWidth: true,
     maxWidth: true,
@@ -18,15 +19,15 @@ export const features = cssMediaFeatures
     maxResolution: true,
   } satisfies Record<keyof OverrideFeatures, true>)
   .extend({
-    minWidth: extendSchemaWithNumber(cssMediaFeatures.shape.minWidth),
-    maxWidth: extendSchemaWithNumber(cssMediaFeatures.shape.maxWidth),
-    width: extendSchemaWithNumber(cssMediaFeatures.shape.width),
-    minHeight: extendSchemaWithNumber(cssMediaFeatures.shape.minHeight),
-    maxHeight: extendSchemaWithNumber(cssMediaFeatures.shape.maxHeight),
-    height: extendSchemaWithNumber(cssMediaFeatures.shape.height),
-    minResolution: extendSchemaWithNumber(cssMediaFeatures.shape.minResolution),
-    maxResolution: extendSchemaWithNumber(cssMediaFeatures.shape.maxResolution),
-    resolution: extendSchemaWithNumber(cssMediaFeatures.shape.resolution),
+    minWidth: extendSchemaWithNumber(mediaFeatures.shape.minWidth),
+    maxWidth: extendSchemaWithNumber(mediaFeatures.shape.maxWidth),
+    width: extendSchemaWithNumber(mediaFeatures.shape.width),
+    minHeight: extendSchemaWithNumber(mediaFeatures.shape.minHeight),
+    maxHeight: extendSchemaWithNumber(mediaFeatures.shape.maxHeight),
+    height: extendSchemaWithNumber(mediaFeatures.shape.height),
+    minResolution: extendSchemaWithNumber(mediaFeatures.shape.minResolution),
+    maxResolution: extendSchemaWithNumber(mediaFeatures.shape.maxResolution),
+    resolution: extendSchemaWithNumber(mediaFeatures.shape.resolution),
   });
 
 export type MediaFeatures = z.infer<typeof features>;
@@ -34,7 +35,7 @@ export type MediaFeatures = z.infer<typeof features>;
 type FeaturesAndOperators =
   | Partial<
       MediaFeatures & {
-        type: z.infer<typeof cssMediaType>;
+        type: MediaType;
         and: FeaturesAndOperators[];
         or: FeaturesAndOperators[];
         not: MaybeArray<FeaturesAndOperators>;
@@ -46,7 +47,7 @@ type FeaturesAndOperators =
 export const featuresAndOperators: z.ZodType<FeaturesAndOperators> = z.union([
   features
     .extend({
-      type: cssMediaType,
+      type: mediaType,
       and: z.lazy(() => operators.shape.and),
       or: z.lazy(() => operators.shape.or),
       not: z.lazy(() => operators.shape.not),
