@@ -1,6 +1,6 @@
 {
   "name": "@dotts/css-constants",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "CSS constants",
   "keywords": ["css", "typescript", "javascript", "constants"],
   "repository": {
