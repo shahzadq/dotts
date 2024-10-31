@@ -1,5 +1,5 @@
-import type { LengthUnit, ResolutionUnit } from "./units";
 import type { Dimension, Ratio } from "./data-types";
+import type { LengthUnit, ResolutionUnit } from "./units";
 
 export type MediaFeaturesLengthUnits = Record<
   "minWidth" | "maxWidth" | "width" | "minHeight" | "maxHeight" | "height",
@@ -44,7 +44,7 @@ export type MediaFeatures = {
     | "browser"
     | "window-controls-overlay";
   dynamicRange: "standard" | "high";
-  forcedColor: "none" | "active";
+  forcedColors: "none" | "active";
   grid: 0 | 1;
   hover: "none" | "hover";
   invertedColors: "none" | "inverted";
@@ -66,7 +66,7 @@ export type MediaNotOperator = "not";
 export type MediaOnlyOperator = "only";
 
 export type MediaBasicType = "screen" | "print" | "all";
-export type TMediaype =
+export type MediaType =
   | MediaBasicType
   | `${MediaOnlyOperator} ${MediaBasicType}`
   | `${MediaNotOperator} ${MediaBasicType}`;

@@ -1,32 +1,24 @@
+import type { Integer, Ratio } from "@dotts/css-types";
 import { z } from "zod";
-import { removeLeadingDigits } from "../utils";
-import { cssFlexUnit, cssPercentageUnit } from "../units";
+import { flexUnit, percentageUnit } from "../units";
+import { typedZod } from "../utils";
 
-export const cssNumber = z.coerce.number();
-export const cssInteger = cssNumber.refine((arg) => {
+export const number = z.coerce.number();
+export const integer = number.refine((arg): arg is Integer => {
   return Number.isInteger(arg);
 });
 
-export const cssDimension = <
-  U extends
-    | z.ZodEnum<[string, ...string[]]>
-    | z.ZodLiteral<string>
-    | z.ZodUnion<[z.ZodTypeAny, ...z.ZodTypeAny[]]>,
->(
-  units: U,
-) =>
-  z.string().refine((arg): arg is `${number}${z.infer<U>}` => {
-    return units.safeParse(removeLeadingDigits(arg)).success;
+export const dimension = <U extends z.ZodType<string>>(units: U) =>
+  z.any().refine((arg): arg is `${number}${z.infer<U>}` => {
+    if (typeof arg !== "string") return false;
+    return units.safeParse(arg.replace(/\d+/, "")).success;
   });
 
-export const cssPercentage = cssDimension(cssPercentageUnit);
+export const percentage = dimension(percentageUnit);
 
-export const cssRatio = z.union([
-  cssNumber,
-  z
-    .string()
-    .regex(/\d+\/\d+/)
-    .refine((arg): arg is `${number}/${number}` => true),
+export const ratio = typedZod.union<Ratio>([
+  number,
+  typedZod.regex<`${number}/${number}`>(/\d+\/\d+/),
 ]);
 
-export const cssFlex = cssDimension(cssFlexUnit);
+export const flex = dimension(flexUnit);

@@ -1,9 +1,4 @@
-export type FontAbsoluteSize =
-  | "xx-small"
-  | "x-small"
-  | "small"
-  | "medium"
-  | "large"
-  | "x-large"
-  | "xx-large"
-  | "xxx-large";
+import type { fontAbsoluteSizes } from "@dotts/css-constants";
+import type { ArrayElement } from "./utils";
+
+export type FontAbsoluteSize = ArrayElement<typeof fontAbsoluteSizes>;

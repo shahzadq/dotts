@@ -1,40 +1,39 @@
-export type AbsoluteLengthUnit = "cm" | "mm" | "Q" | "in" | "pc" | "pt" | "px";
-export type FontRelativeLengthUnit = "em" | "ex" | "ch" | "rem" | "lh" | "rlh";
-export type ViewportRelativeLengthUnit =
-  | "vw"
-  | "vh"
-  | "vmin"
-  | "vmax"
-  | "vb"
-  | "vi"
-  | "svw"
-  | "svh"
-  | "lvw"
-  | "lvh"
-  | "dvw"
-  | "dvh";
-export type RelativeLengthUnit =
-  | FontRelativeLengthUnit
-  | ViewportRelativeLengthUnit;
-export type LengthUnit = AbsoluteLengthUnit | RelativeLengthUnit;
+import type {
+  absoluteLengthUnits,
+  angleUnits,
+  fontRelativeLengthUnits,
+  frequencyUnits,
+  lengthUnits,
+  relativeLengthUnits,
+  resolutionUnits,
+  timeUnits,
+  viewportRelativeLengthUnits,
+  percentageUnit,
+  flexUnit,
+  units,
+} from "@dotts/css-constants";
+import type { ArrayElement } from "./utils";
 
-export type ResolutionUnit = "dpi" | "dpcm" | "dppx" | "x";
+export type AbsoluteLengthUnit = ArrayElement<typeof absoluteLengthUnits>;
+export type FontRelativeLengthUnit = ArrayElement<
+  typeof fontRelativeLengthUnits
+>;
+export type ViewportRelativeLengthUnit = ArrayElement<
+  typeof viewportRelativeLengthUnits
+>;
+export type RelativeLengthUnit = ArrayElement<typeof relativeLengthUnits>;
+export type LengthUnit = ArrayElement<typeof lengthUnits>;
 
-export type AngleUnit = "deg" | "grad" | "rad" | "turn";
+export type ResolutionUnit = ArrayElement<typeof resolutionUnits>;
 
-export type TimeUnit = "s" | "ms";
+export type AngleUnit = ArrayElement<typeof angleUnits>;
 
-export type FrequencyUnit = "Hz" | "kHz";
+export type TimeUnit = ArrayElement<typeof timeUnits>;
 
-export type PercentageUnit = "%";
+export type FrequencyUnit = ArrayElement<typeof frequencyUnits>;
 
-export type FlexUnit = "fr";
+export type PercentageUnit = typeof percentageUnit;
 
-export type Unit =
-  | LengthUnit
-  | ResolutionUnit
-  | AngleUnit
-  | TimeUnit
-  | FrequencyUnit
-  | PercentageUnit
-  | FlexUnit;
+export type FlexUnit = typeof flexUnit;
+
+export type Unit = ArrayElement<typeof units>;

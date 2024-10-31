@@ -1,12 +1,6 @@
-import { z } from "zod";
+import { fontAbsoluteSizes } from "@dotts/css-constants";
+import type { FontAbsoluteSize } from "@dotts/css-types";
+import { typedZod } from "./utils";
 
-export const CSSFontAbsoluteSize = z.enum([
-  "xx-small",
-  "x-small",
-  "small",
-  "medium",
-  "large",
-  "x-large",
-  "xx-large",
-  "xxx-large",
-]);
+export const fontAbsoluteSize =
+  typedZod.enum<FontAbsoluteSize>(fontAbsoluteSizes);

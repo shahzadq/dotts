@@ -1,0 +1,20 @@
+{
+  "name": "@dotts/css-constants",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/shahzadq/dotts.git"
+  },
+  "homepage": "https://github.com/shahzadq/dotts/tree/main/packages/css-constants",
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "shx rm -rf .turbo node_modules",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}

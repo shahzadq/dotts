@@ -1,9 +1,5 @@
-export type WideKeyword = "initial" | "inherit" | "revert" | "unset";
-export type None = "none";
+import type { none, wideKeywords } from "@dotts/css-constants";
+import type { ArrayElement } from "../utils";
 
-export type CustomIndent = string;
-export type DashedIndent = `--${CustomIndent}`;
-
-export type String = `"${string}"` | `'${string}'`;
-
-export type Url = `url(${string})`;
+export type WideKeyword = ArrayElement<typeof wideKeywords>;
+export type None = typeof none;

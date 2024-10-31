@@ -1,58 +1,51 @@
-import { z } from "zod";
+import type {
+  FrequencyUnit,
+  PercentageUnit,
+  AbsoluteLengthUnit,
+  AngleUnit,
+  FontRelativeLengthUnit,
+  LengthUnit,
+  RelativeLengthUnit,
+  ResolutionUnit,
+  TimeUnit,
+  ViewportRelativeLengthUnit,
+  FlexUnit,
+  Unit,
+} from "@dotts/css-types";
+import * as constants from "@dotts/css-constants";
+import { typedZod } from "./utils";
 
-export const cssAbsoluteLengthUnit = z.enum([
-  "cm",
-  "mm",
-  "Q",
-  "in",
-  "pc",
-  "pt",
-  "px",
-]);
+export const absoluteLengthUnit = typedZod.enum<AbsoluteLengthUnit>(
+  constants.absoluteLengthUnits,
+);
+export const fontRelativeLengthUnit = typedZod.enum<FontRelativeLengthUnit>(
+  constants.fontRelativeLengthUnits,
+);
+export const viewportRelativeLengthUnit =
+  typedZod.enum<ViewportRelativeLengthUnit>(
+    constants.viewportRelativeLengthUnits,
+  );
+export const relativeLengthUnit = typedZod.enum<RelativeLengthUnit>(
+  constants.relativeLengthUnits,
+);
+export const lengthUnit = typedZod.enum<LengthUnit>(constants.lengthUnits);
 
-export const cssFontRelativeLengthUnit = z.enum([
-  "em",
-  "ex",
-  "ch",
-  "rem",
-  "lh",
-  "rlh",
-]);
-export const cssViewportRelativeLengthUnit = z.enum([
-  "vw",
-  "vh",
-  "vmin",
-  "vmax",
-  "vb",
-  "vi",
-  "svw",
-  "svh",
-  "lvw",
-  "lvh",
-  "dvw",
-  "dvh",
-]);
-export const cssRelativelengthUnit = z.union([
-  cssFontRelativeLengthUnit,
-  cssViewportRelativeLengthUnit,
-]);
+export const resolutionUnit = typedZod.enum<ResolutionUnit>(
+  constants.resolutionUnits,
+);
 
-export const cssLengthUnit = z.union([
-  cssAbsoluteLengthUnit,
-  cssRelativelengthUnit,
-]);
+export const angleUnit = typedZod.enum<AngleUnit>(constants.angleUnits);
 
-export const cssResolutionUnit = z.enum(["dpi", "dpcm", "dppx", "x"]);
-export const cssAngleUnit = z.enum(["deg", "grad", "rad", "turn"]);
-export const cssTimeUnit = z.enum(["s", "ms"]);
-export const cssFrequencyUnit = z.enum(["Hz", "kHz"]);
+export const timeUnit = typedZod.enum<TimeUnit>(constants.timeUnits);
 
-export const cssUnit = z.union([
-  cssLengthUnit,
-  cssResolutionUnit,
-  cssAngleUnit,
-  cssTimeUnit,
-]);
+export const frequencyUnit = typedZod.enum<FrequencyUnit>(
+  constants.frequencyUnits,
+);
 
-export const cssPercentageUnit = z.literal("%");
-export const cssFlexUnit = z.literal("fr");
+export const percentageUnit = typedZod.literal<PercentageUnit>(
+  constants.percentageUnit,
+);
+
+export const flexUnit = typedZod.literal<FlexUnit>(constants.flexUnit);
+
+export const unit = typedZod.enum<Unit>(constants.units);

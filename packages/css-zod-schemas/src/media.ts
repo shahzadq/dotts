@@ -1,41 +1,49 @@
+import type {
+  MediaAndOperator,
+  MediaBasicType,
+  MediaFeatures,
+  MediaFeaturesLengthUnits,
+  MediaFeaturesResolutionUnits,
+  MediaNotOperator,
+  MediaOnlyOperator,
+  MediaOrOperator,
+  MediaType,
+} from "@dotts/css-types";
 import { z } from "zod";
-import { cssLengthUnit, cssResolutionUnit } from "./units";
-import { cssRatio, cssNumberWithUnit } from "./data-types";
+import { dimension, ratio } from "./data-types";
+import { lengthUnit, resolutionUnit } from "./units";
+import { typedZod } from "./utils";
 
-export const cssLengthMediaFeaturesUnits = z.object({
-  minWidth: cssLengthUnit,
-  maxWidth: cssLengthUnit,
-  width: cssLengthUnit,
-  minHeight: cssLengthUnit,
-  maxHeight: cssLengthUnit,
-  height: cssLengthUnit,
-});
+export const mediaFeaturesLengthUnits =
+  typedZod.object<MediaFeaturesLengthUnits>({
+    minWidth: lengthUnit,
+    maxWidth: lengthUnit,
+    width: lengthUnit,
+    minHeight: lengthUnit,
+    maxHeight: lengthUnit,
+    height: lengthUnit,
+  });
 
-export const cssResolutionMediaFeaturesUnits = z.object({
-  minResolution: cssResolutionUnit,
-  maxResolution: cssResolutionUnit,
-  resolution: cssResolutionUnit,
-});
+export const mediaFeaturesResolutionUnits =
+  typedZod.object<MediaFeaturesResolutionUnits>({
+    minResolution: resolutionUnit,
+    maxResolution: resolutionUnit,
+    resolution: resolutionUnit,
+  });
 
-export const cssMediaFeatures = z.object({
-  minWidth: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.minWidth),
-  maxWidth: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.maxWidth),
-  width: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.width),
-  minHeight: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.minHeight),
-  maxHeight: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.maxHeight),
-  height: cssNumberWithUnit(cssLengthMediaFeaturesUnits.shape.height),
-  minResolution: cssNumberWithUnit(
-    cssResolutionMediaFeaturesUnits.shape.minResolution,
-  ),
-  maxResolution: cssNumberWithUnit(
-    cssResolutionMediaFeaturesUnits.shape.maxResolution,
-  ),
-  resolution: cssNumberWithUnit(
-    cssResolutionMediaFeaturesUnits.shape.resolution,
-  ),
-  minAspectRatio: cssRatio,
-  maxAspectRatio: cssRatio,
-  aspectRatio: cssRatio,
+export const mediaFeatures = typedZod.object<MediaFeatures>({
+  minWidth: dimension(mediaFeaturesLengthUnits.shape.minWidth),
+  maxWidth: dimension(mediaFeaturesLengthUnits.shape.maxWidth),
+  width: dimension(mediaFeaturesLengthUnits.shape.width),
+  minHeight: dimension(mediaFeaturesLengthUnits.shape.minHeight),
+  maxHeight: dimension(mediaFeaturesLengthUnits.shape.maxHeight),
+  height: dimension(mediaFeaturesLengthUnits.shape.height),
+  minResolution: dimension(mediaFeaturesResolutionUnits.shape.minResolution),
+  maxResolution: dimension(mediaFeaturesResolutionUnits.shape.maxResolution),
+  resolution: dimension(mediaFeaturesResolutionUnits.shape.resolution),
+  minAspectRatio: ratio,
+  maxAspectRatio: ratio,
+  aspectRatio: ratio,
   minColor: z.number(),
   maxColor: z.number(),
   color: z.number(),
@@ -61,8 +69,8 @@ export const cssMediaFeatures = z.object({
   grid: z.union([z.literal(1), z.literal(0)]),
   hover: z.enum(["none", "hover"]),
   invertedColors: z.enum(["none", "inverted"]),
-  overflowBlock: z.enum(["none", "scroll", "optional-paged", "paged"]),
-  overlowInline: z.enum(["none", "scroll"]),
+  overflowBlock: z.enum(["none", "scroll", "optional-speed", "paged"]),
+  overflowInline: z.enum(["none", "scroll"]),
   pointer: z.enum(["none", "coarse", "fine"]),
   prefersColorScheme: z.enum(["light", "dark"]),
   prefersContrast: z.enum(["no-preference", "more", "less", "custom"]),
@@ -73,15 +81,19 @@ export const cssMediaFeatures = z.object({
   videoDynamicRange: z.enum(["standard", "high"]),
 });
 
-export const cssMediaOrOperator = z.literal("or");
-export const cssMediaAndOperator = z.literal("and");
-export const cssMediaNotOperator = z.literal("not");
-export const cssMediaOnlyOperator = z.literal("only");
+export const mediaOrOperator = typedZod.literal<MediaOrOperator>("or");
+export const mediaAndOperator = typedZod.literal<MediaAndOperator>("and");
+export const mediaNotOperator = typedZod.literal<MediaNotOperator>("not");
+export const mediaOnlyOperator = typedZod.literal<MediaOnlyOperator>("only");
 
-export const cssMediaBasicType = z.enum(["screen", "print", "all"]);
-export const cssMediaType = z.union([
-  cssMediaBasicType,
-  z.enum([
+export const mediaBasicType = typedZod.enum<MediaBasicType>([
+  "screen",
+  "print",
+  "all",
+]);
+export const mediaType = typedZod.union<MediaType>([
+  mediaBasicType,
+  typedZod.enum<Exclude<MediaType, MediaBasicType>>([
     "only screen",
     "not screen",
     "only print",

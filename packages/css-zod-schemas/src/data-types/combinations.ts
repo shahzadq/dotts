@@ -1,8 +1,29 @@
-import { z } from "zod";
-import { cssAngle, cssFrequency, cssLength, cssTime } from "./quantities";
-import { cssPercentage } from "./numeric";
+import type {
+  AnglePercentage,
+  FrequencyPercentage,
+  LengthPercentage,
+  TimePercentage,
+} from "@dotts/css-types";
+import { typedZod } from "../utils";
+import { percentage } from "./numeric";
+import { angle, frequency, length, time } from "./quantities";
 
-export const cssLengthPercentage = z.union([cssLength, cssPercentage]);
-export const cssFrequencyPecentage = z.union([cssFrequency, cssPercentage]);
-export const cssAnglePercentage = z.union([cssAngle, cssPercentage]);
-export const cssTimePercentage = z.union([cssTime, cssPercentage]);
+export const lengthPercentage = typedZod.union<LengthPercentage>([
+  length,
+  percentage,
+]);
+
+export const frequencyPercentage = typedZod.union<FrequencyPercentage>([
+  frequency,
+  percentage,
+]);
+
+export const anglePercentage = typedZod.union<AnglePercentage>([
+  angle,
+  percentage,
+]);
+
+export const timePercentage = typedZod.union<TimePercentage>([
+  time,
+  percentage,
+]);

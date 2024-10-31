@@ -13,7 +13,10 @@
     "rules": {
       "recommended": true,
       "correctness": { "noUnusedVariables": "warn", "noUnusedImports": "warn" },
-      "style": { "useImportType": "warn", "noNonNullAssertion": "error" }
+      "style": {
+        "useImportType": "warn",
+        "noNonNullAssertion": "error"
+      }
     }
   },
   "javascript": { "formatter": { "quoteStyle": "double" } }
